@@ -1,0 +1,71 @@
+---
+title: 'Advanced Page View Tracking'
+description: 'For React, Next.js, Turbo, and Single-Page Applications'
+icon: 'js'
+---
+
+RevGems automatically tracks a page view each time a visitor loads a page in your website or application.
+
+However, if you have a single-page app (SPA) or use a JavaScript library like React or Turbo (Rails), you'll need to manually track additional page views as the visitor navigates through your website. This is because navigation with with these libraries doesn't trigger a true page refresh in the browser.
+
+You can manually track a page view with the following JavaScript function call:
+
+```javascript
+revgems("pageView")
+```
+
+Call this function any time a "navigation" event occurs within your website or application.
+
+Here are some framework-specific examples to help get you started.
+
+## Turbo (Rails)
+
+Call `revgems("pageView")` whenever the page changes by adding the following code snippet to the `<head>` tag just below the main RevGems code snippet:
+
+```javascript
+<script>
+  document.addEventListener("turbo:visit", (event) => {
+    revgems("pageView", {
+      url: event.detail.url,
+      referrer: document.location.href
+    })
+  })
+</script>
+```
+
+## React / Next.js
+
+Call the `revgems("pageView")` function any time the page changes. For example, if you're using [Next.js](https://nextjs.org) you could call the function when the router fires the `routeChangeComplete` event:
+
+```javascript
+import { useEffect } from 'react'
+import { useRouter } from 'next/router'
+
+export default function MyApp({ Component, pageProps }) {
+  const router = useRouter();
+
+  useEffect(() => {
+    let originUrl;
+
+    // Keep track of where we're navigating from (for the referrer)
+    const handleRouteChangeStart = (url) => {
+      originUrl = document.location.href;
+    };
+
+    const handleRouteChangeComplete = (url) => {
+      window.revgems('pageView', { referrer: originUrl }); // 👈 TRACK PAGE VIEW IN REVGEMS
+    };
+
+    router.events.on('routeChangeStart', handleRouteChangeStart);
+    router.events.on('routeChangeComplete', handleRouteChangeComplete);
+
+    // If the component is unmounted, unsubscribe from the event with the `off` method:
+    return () => {
+      router.events.off('routeChangeStart', handleRouteChangeStart);
+      router.events.off('routeChangeComplete', handleRouteChangeComplete);
+    };
+  }, [router.events]);
+
+  return
+}
+```
