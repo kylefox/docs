@@ -1,0 +1,83 @@
+---
+title: 'Cross-Domain Tracking'
+description: 'How to track traffic across different top-level domains'
+icon: 'globe'
+---
+
+<Note>
+The RevGems `<script>` tags must be installed on **all subdomains and domains** that you wish to track across. If you experience issues setting up cross-subdomain or cross-domain tracking, please verify that the tag is present on **every page of every domain.**
+</Note>
+
+## Tracking across subdomains
+
+RevGems automatically tracks across subdomains, provided that the RevGems `<script>` tag is properly installed on each subdomain. There is no extra work required to enable cross-subdomain tracking.
+
+**Example:** A common scenario is to have your marketing website and application running on different subdomains:
+
+- **Marketing website:** `www.example.com`
+- **Application:** `app.example.com`
+
+In this scenario, RevGems will automatically identify a visitor as they navigate between `www.example.com` and `app.example.com`.
+
+## Tracking across domains
+
+Due to the limitations of how browser cookies work, some extra work is required to enable cross-domain tracking with RevGems.
+
+**Example:**
+
+- **Marketing website:** `example.com`
+- **Application:** `example-app.com`
+
+To enable correct attribution as visitors navigate between these two domains, add an array of domains to your `REVGEMS_CONFIG`:
+
+```html
+<script>
+  window.REVGEMS_CONFIG = {
+    domains: ["example.com", "example-app.com"]
+  };
+</script>
+```
+
+This `REVGEMS_CONFIG` snippet must be added to both websites, and must appear on the page *before* any other RevGems script tags.
+
+## How it works
+
+When you include the `REVGEMS_CONFIG.domains` attribute, the RevGems script will add a `revgems-session-id=<SESSION_ID>` query parameter to outgoing links to these domains. This query parameter uniquely identifies the visitor as they click between domains.
+
+For example, if a referred visitor has landed on `www.example.com`, any links on that page which lead to `example-app.com` will have the query parameter added:
+
+| Original Link URL                             | Cross-Domain Link URL                                                         |
+| --------------------------------------------- | ----------------------------------------------------------------------------- |
+| `example-app.com/sign-up`                     | `example-app.com/sign-up?revgems-session-id=<SESSION_ID>`                     |
+| `example-app.com/sign-up?utm_source=facebook` | `example-app.com/sign-up?utm_source=facebook&revgems-visitor-id=<SESSION_ID>` |
+
+Note that existing query parameters on links will be correctly preserved.
+
+## Considerations for React, SPAs, Turbo and other dynamic links
+
+RevGems will create cross-domain links when the page loads, but will not automatically add cross-domain compatibility to links that are dynamically inserted into the page later.
+
+Some examples when this might happen:
+
+- A new React component is mounted
+- Navigation within a React app (i.e. routing changes)
+- Pages or fragments loaded with Turbo
+- Any other link that’s inserted into the page with JavaScript
+
+In this scenario, you’ll need to call `revgems("createCrossDomainLinks")` after new links have been inserted into the document. For example, with Turbo (Rails) you could add an event handler that re-runs this function:
+
+```jsx
+<script>
+  document.addEventListener("turbo:visit", (event) => {
+    revgems("pageView")
+    revgems("createCrossDomainLinks")
+  })
+</script>
+```
+
+<Note>
+his example includes the call to `revgems("pageView")`, which is also required when using Turbo, React, and other Single Page Applications.
+
+Learn more about [Advanced Page View Tracking](/guides/advanced-page-view-tracking)
+
+</Note>

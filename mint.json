@@ -43,13 +43,9 @@
     {
       "group": "Guides",
       "pages": [
+        "guides/metrics-explained",
         "guides/advanced-page-view-tracking",
-        "guides/markdown",
-        "guides/code",
-        "guides/images",
-        "guides/settings",
-        "guides/navigation",
-        "guides/reusable-snippets"
+        "guides/cross-domain-tracking"
       ]
     },
     {
