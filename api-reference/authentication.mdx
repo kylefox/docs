@@ -1,0 +1,38 @@
+---
+title: 'Authentication'
+description: 'How to make authenticated requests to the RevGems REST API'
+icon: 'lock'
+iconType: "solid"
+---
+
+## API Secrets
+
+RevGems uses API Secrets to authenticate requests.
+You can view and manage your API Secrets under [Settings &rsaquo; API Secrets](https://app.revgems.com/api_secrets) in the RevGems dashboard.
+
+<Warning>
+  Keep your API Secrets safe!
+</Warning>
+
+Anyone with access to your API Secret has a lot of control over your RevGems account.
+Never expose them publicly through a web browser or commit them unencrypted to version control systems like git.
+
+## Authenticating Requests
+
+Provide your API Secret as a Bearer token in the `Authorization` header:
+
+```
+Authorization: Bearer api_secret_ABCDEFG123456
+```
+
+Requests can also be authenticated using HTTP Basic Auth. Provide your API Secret as the username value and leave the password blank.
+
+A `401 Unauthorized` error response will be returned if authentication fails.
+
+<ResponseExample>
+  ```json 401 Unauthorized
+  {
+    "error": "Invalid API credentials."
+  }
+  ```
+</ResponseExample>

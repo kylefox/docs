@@ -1,0 +1,48 @@
+---
+title: 'Errors'
+description: 'How errors are represented in the RevGems REST API'
+icon: 'burst'
+iconType: "solid"
+---
+
+RevGems uses conventional [HTTP response status codes](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status) to indicate the success or failure of an API request. In general:
+
+- Codes in the `2xx` range indicate success.
+- Codes in the `4xx` range indicate an error that failed given the information provided (e.g., a required parameter was omitted, authentication failed, etc.).
+- Codes in the `5xx` range indicate an error with RevGems servers.
+
+Responses in the `4xx` - `5xx` range will return a JSON object with an `error` attribute describing what went wrong.
+Some endpoints may also return a `details` array with more information on the specific error that occurred.
+
+<ResponseExample>
+  ```json 422 Unprocessable Content
+  {
+    "error": "Could not create payment",
+    "details": ["Amount cents can't be blank"]
+  }
+  ```
+  ```json 401 Unauthorized
+  {
+    "error": "Invalid API credentials."
+  }
+  ```
+</ResponseExample>
+
+## Common Error Codes
+
+<AccordionGroup>
+  <Accordion title="400: Bad Request">
+    Something about the request was malfomed or invalid. For example, the `Content-Type: application/json` header was missing.
+    The request should not be tried again without modification.
+  </Accordion>
+  <Accordion title="401: Unauthorized">
+    Authentication has failed because the API Secret was either invalid or missing. See [Authentication](/api-reference/authentication).
+  </Accordion>
+  <Accordion title="404: Not Found">
+    The endpoint is valid but the requested resource itself does not exist.
+  </Accordion>
+  <Accordion title="422: Unprocessable Content">
+    The request was well-formed but was unable to be completed due to validation errors.
+    For example, a required parameter was missing or invalid.
+  </Accordion>
+</AccordionGroup>

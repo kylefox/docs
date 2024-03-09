@@ -1,33 +1,22 @@
 ---
 title: 'Introduction'
-description: 'Example section for showcasing API endpoints'
+description: 'Your guide to the RevGems REST API'
+icon: 'network-wired'
+iconType: "solid"
 ---
 
-<Note>
-  If you're not looking to build API reference documentation, you can delete
-  this section by removing the api-reference folder.
-</Note>
+The REST API allows you more fine-grained control over how visitor and payment data is written to and read from RevGems.
+JSON is the only supported data format.
 
-## Welcome
+<Info>
+All requests to the API must include the `Content-Type: application/json` header.
+</Info>
 
-There are two ways to build API documentation: [OpenAPI](https://mintlify.com/docs/api-playground/openapi/setup) and [MDX components](https://mintlify.com/docs/api-playground/mdx/configuration). For the starter kit, we are using the following OpenAPI specification.
-
-<Card
-  title="Plant Store Endpoints"
-  icon="leaf"
-  href="https://github.com/mintlify/starter/blob/main/api-reference/openapi.json"
->
-  View the OpenAPI specification file
-</Card>
-
-## Authentication
-
-All API endpoints are authenticated using Bearer tokens and picked up from the specification file.
-
-```json
-"security": [
-  {
-    "bearerAuth": []
-  }
-]
-```
+<CardGroup cols={2}>
+  <Card title="Authentication" icon="lock" href="/api-reference/authentication">
+    Learn how to authenticate with the RevGems REST API.
+  </Card>
+  <Card title="Errors" icon="burst" href="/api-reference/errors">
+    Learn how errors are represented in the RevGems REST API.
+  </Card>
+</CardGroup>

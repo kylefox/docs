@@ -25,14 +25,16 @@
     "name": "Dashboard",
     "url": "https://app.revgems.com"
   },
+  "tabs": [
+    {
+      "name": "API Reference",
+      "url": "api-reference"
+    }
+  ],
   "navigation": [
     {
-      "group": "Get Started",
-      "pages": [
-        "what-is-revgems",
-        "how-revgems-works",
-        "faqs"
-      ]
+      "group": "Getting Started",
+      "pages": ["what-is-revgems", "how-revgems-works", "faqs"]
     },
     {
       "group": "Guides",
@@ -41,6 +43,27 @@
         "guides/advanced-page-view-tracking",
         "guides/cross-domain-tracking"
       ]
+    },
+    {
+      "group": "Getting Started",
+      "pages": [
+        "api-reference/introduction",
+        "api-reference/authentication",
+        "api-reference/errors"
+      ]
+    },
+    {
+      "group": "Payments",
+      "pages": ["api-reference/payments/create"]
     }
-  ]
+  ],
+  "api": {
+    "baseUrl": "https://api.revgems.com",
+    "playground": {
+      "mode": "simple"
+    },
+    "auth": {
+      "method": "bearer"
+    }
+  }
 }

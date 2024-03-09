@@ -1,0 +1,116 @@
+---
+title: 'Create Payment'
+api: 'POST /v1/payments'
+description: 'Creates a Payment associated with a Visitor'
+---
+
+import ApiHeaders from '/snippets/api-headers.mdx';
+
+<ApiHeaders />
+
+## Request Body
+
+<Warning>
+  Either `user_id` or `visitor_id` are required to create a payment.
+</Warning>
+
+<ParamField body="visitor_id" type="uuid">
+  You can pass visitor_id instead of user_id . This should be the RevGems visitor captured from JavaScript with RevGems.visitorId
+</ParamField>
+
+<ParamField body="visitor_id" type="uuid">
+  You can pass visitor_id instead of user_id . This should be the RevGems visitor captured from JavaScript with RevGems.visitorId
+</ParamField>
+
+<ParamField body="user_id" type="string">
+  The ID of the user in your system. Must match the `user_id` passed to `revgems("lead")` via JavaScript.
+</ParamField>
+
+<ParamField body="platform_id" type="string" required>
+  The unique ID of this payment in your payment processor or database.
+</ParamField>
+
+<ParamField body="amount_cents" type="integer" required>
+  The amount of the payment in cents. For example, a $123.45 payment should be provided as `12345`.
+</ParamField>
+
+<ParamField body="currency" type="string" required>
+  The [ISO 4217](https://en.wikipedia.org/wiki/ISO_4217) currency code in which `amount_cents` is denominated (USD, EUR, etc).
+</ParamField>
+
+<ParamField body="description" type="string">
+  A description of the payment to help you identify it in your RevGems dashboard.
+</ParamField>
+
+<ParamField body="test_mode" type="boolean" default="false">
+  A boolean indicating if this payment occurred in test-mode (i.e. while testing your RevGems integration) or live-mode (i.e. a real customer was billed).
+  Defaults to `false` if omitted.
+</ParamField>
+
+## Response
+
+If the payment was created successfully a `201 Created` response will be returned with a payload representing the payment.
+
+If the `user_id` did not match a Visitor in your RevGems account, an empty `204  No Content` will be returned. This allows you to safely submit *all* your payments to the RevGems REST API without having to worry if RevGems has a Visitor for that user. When this happens, no payment is created in RevGems.
+
+If the payment could not be created due to validation errors, a `422 Unprocessable Content` will be returned along with a description of the problem.
+
+<RequestExample>
+  ```bash cURL
+  curl --request POST \
+    --url https://api.revgems.com/v1/payments \
+    --header 'Authorization: Bearer api_secret_abc123' \
+    --header 'Content-Type: application/json' \
+    --data '{
+      "visitor_id": "b373e852-4c7a-4eed-b6a4-c05b6cad3f5a",
+      "platform_id": "42",
+      "amount_cents": 4599,
+      "currency": "USD",
+      "description": "Monthly Subscription",
+    }'
+  ```
+  ```python Python
+  import requests
+
+  url = "https://api.revgems.com/v1/payments"
+
+  payload = {
+      "visitor_id": "b373e852-4c7a-4eed-b6a4-c05b6cad3f5a",
+      "platform_id": "42",
+      "amount_cents": 4599,
+      "currency": "USD",
+      "description": "Monthly Subscription"
+  }
+  headers = {
+      "Authorization": "Bearer api_secret_abc123",
+      "Content-Type": "application/json"
+  }
+
+  response = requests.request("POST", url, json=payload, headers=headers)
+
+  print(response.text)
+  ```
+</RequestExample>
+
+
+<ResponseExample>
+  ```json 201 Created
+  {
+    "id": "5732b1c2-7040-4bfe-83c2-9f7be291f74b",
+    "amount_cents": 4599,
+    "currency": "USD",
+    "description": "Monthly Subscription",
+    "test_mode": false,
+    "platform_id": "42"
+  }
+  ```
+  ```json 204 No Content
+  // Response body will be empty.
+  ```
+  ```json 422 Unprocessable Content
+  {
+    "error": "Could not create payment",
+    "details": ["Amount cents can't be blank"]
+  }
+  ```
+</ResponseExample>
