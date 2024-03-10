@@ -65,5 +65,11 @@
     "auth": {
       "method": "bearer"
     }
+  },
+  "footerSocials": {
+    "twitter": "https://twitter.com/RevGems",
+    "github": "https://github.com/review-rocket/docs",
+    "linkedin": "https://www.linkedin.com/company/revgems/",
+    "facebook": "https://www.facebook.com/profile.php?id=61554437310916"
   }
 }
