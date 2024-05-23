@@ -27,7 +27,7 @@
   },
   "tabs": [
     {
-      "name": "API Reference",
+      "name": "REST API (Deprecated)",
       "url": "api-reference"
     }
   ],
