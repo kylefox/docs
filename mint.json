@@ -34,7 +34,11 @@
   "navigation": [
     {
       "group": "Getting Started",
-      "pages": ["what-is-revgems", "faqs"]
+      "pages": [
+        "what-is-revgems",
+        "how-revgems-works",
+        "faqs"
+      ]
     },
 
     {
