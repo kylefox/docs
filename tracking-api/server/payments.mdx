@@ -11,7 +11,7 @@ If you're using Stripe, you can simply install the RevGems App into your Stripe 
 
 ## Other Payment Processors
 
-You can track payments from all other platforms (PayPal, Chargebee, etc) by sending a <code>payment</code> message to the Tracking API. To do this you'll need your [Push Key Secret](https://app.revgems.com/tracking/push_keys) from your RevGems dashboard. When you make payment requests to the Tracking API you've done so, the payments will appear in your [Message Log](https://app.revgems.com/tracking/messages?q%5Bmessage_id_or_anonymous_id_or_user_id_or_account_id_or_ip_or_properties_or_context_or_authentication_or_account_hash_cont%5D=&q%5Bmessage_type_eq%5D=payment&q%5Btest_mode_eq%5D=&button=) with type <code>payment</code>.
+You can track payments from all other platforms (PayPal, Chargebee, etc) by sending a <code>payment</code> message to the Tracking API. To do this you'll need your [Push Key Secret](https://app.revgems.com/tracking/push_keys) from your RevGems dashboard. When you make payment requests to the Tracking API, the payments will appear in your [Message Log](https://app.revgems.com/tracking/messages?q%5Bmessage_id_or_anonymous_id_or_user_id_or_account_id_or_ip_or_properties_or_context_or_authentication_or_account_hash_cont%5D=&q%5Bmessage_type_eq%5D=payment&q%5Btest_mode_eq%5D=&button=) with type <code>payment</code>.
 
 <ul>
   <li><strong>API Endpoint:</strong> <code>https://t.revgems.com/messages</code></li>
@@ -69,7 +69,7 @@ Here's an example request body using only the required parameters:
 
 It's recommended to include the following parameters in the JSON request body.
 
-<ParamField body="message_id" type="string" required>
+<ParamField body="message_id" type="string">
   An arbitrary string identifier that functions as an [idempotency key](https://en.wikipedia.org/wiki/Idempotence).
   Used to prevent the same message from being inadvertantly processed multiple times. We recommend using the payments unique ID in your own database or external payment process for this value.
 
