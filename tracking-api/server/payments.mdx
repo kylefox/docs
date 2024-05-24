@@ -11,9 +11,16 @@ If you're using Stripe, you can simply install the RevGems App into your Stripe 
 
 ## Other Payment Processors
 
-You can track payments from all other platforms (PayPal, Chargebee, etc) by sending a <code>payment</code> message to the Tracking API. To do this you'll need your [Push Key Secret](https://app.revgems.com/tracking/push_keys) from your RevGems dashboard.
+You can track payments from all other platforms (PayPal, Chargebee, etc) by sending a <code>payment</code> message to the Tracking API. To do this you'll need your [Push Key Secret](https://app.revgems.com/tracking/push_keys) from your RevGems dashboard. When you make payment requests to the Tracking API you've done so, the payments will appear in your [Message Log](https://app.revgems.com/tracking/messages?q%5Bmessage_id_or_anonymous_id_or_user_id_or_account_id_or_ip_or_properties_or_context_or_authentication_or_account_hash_cont%5D=&q%5Bmessage_type_eq%5D=payment&q%5Btest_mode_eq%5D=&button=) with type <code>payment</code>.
 
-https://t.revgems.com/messages
+<ul>
+  <li><strong>API Endpoint:</strong> <code>https://t.revgems.com/messages</code></li>
+  <li><strong>Method:</strong> <code>POST</code></li>
+</ul>
+
+### Headers
+
+Requests made to this endpoint must have the following request headers.
 
 <ParamField header="Authorization" required>
   Your Push Key Secret provided as a Bearer token.
@@ -24,14 +31,71 @@ https://t.revgems.com/messages
   Must be `application/json`
 </ParamField>
 
+### Required Parameters
+
+Requests made to this endpoint must have the following parameters in the JSON request body.
+
+<ParamField body="account_id" type="string" required>
+  The Account ID in your system that the payment is associated with. This must be the same ID you pass when [tracking accounts](https://app.revgems.com/tracking/setup/accounts).
+</ParamField>
+
+<ParamField body="type" type="string" required>
+  Must be the literal value <code>"payment"</code>.
+</ParamField>
+
+<ParamField body="properties.amount_cents" type="integer" required>
+  Amount collected by this payment. Must be a positive integer representing the amount in the smallest currency unit (e.g., 100 cents to charge \$1.00 USD).
+  For example, if the payment amount is $245.99, pass <code>24599</code>.
+</ParamField>
+
+<ParamField body="properties.currency" type="string" required>
+  The [ISO 4217](https://en.wikipedia.org/wiki/ISO_4217) currency code in which `amount_cents` is denominated (USD, EUR, etc).
+</ParamField>
+
+Here's an example request body using only the required parameters:
 
 ```json
 {
-  "accountId": "99",
+  "accountId": "42",
   "type": "payment",
   "properties": {
     "amount_cents": 12300,
     "currency": "USD"
+  }
+}
+```
+
+### Recommended Parameters
+
+It's recommended to include the following parameters in the JSON request body.
+
+<ParamField body="message_id" type="string" required>
+  An arbitrary string identifier that functions as an [idempotency key](https://en.wikipedia.org/wiki/Idempotence).
+  Used to prevent the same message from being inadvertantly processed multiple times. We recommend using the payments unique ID in your own database or external payment process for this value.
+
+  <strong>Example:</strong> Imagine a scenario where your payments are sent to RevGems on a background job. If the API request succeeds but the job fails for another reason, the job may be automatically retried in your system — possibly many times. As long as the same <code>message_id</code> is sent, RevGems will only track the payment once, regardless of how many times the request is sent.
+</ParamField>
+
+<ParamField body="properties.id" type="string">
+  The ID of the payment in your own database or external payment processor.
+</ParamField>
+
+<ParamField body="properties.description" type="string">
+  A short description of the payment.
+</ParamField>
+
+Here's an example request body using the recommended parameters:
+
+```json
+{
+  "accountId": "42",
+  "type": "payment",
+  "message_id": "payment-ABCD-DEFG",
+  "properties": {
+    "amount_cents": 12300,
+    "currency": "USD",
+    "id": "payment-ABCD-DEFG",
+    "description": "Premium Subscription Renewal"
   }
 }
 ```
