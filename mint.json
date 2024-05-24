@@ -34,27 +34,7 @@
   "navigation": [
     {
       "group": "Getting Started",
-      "pages": ["what-is-revgems", "how-revgems-works", "faqs"]
-    },
-    {
-      "group": "Guides",
-      "pages": [
-        "guides/metrics-explained",
-        "guides/advanced-page-view-tracking",
-        "guides/cross-domain-tracking"
-      ]
-    },
-    {
-      "group": "Getting Started",
-      "pages": [
-        "api-reference/introduction",
-        "api-reference/authentication",
-        "api-reference/errors"
-      ]
-    },
-    {
-      "group": "Payments",
-      "pages": ["api-reference/payments/create"]
+      "pages": ["what-is-revgems", "faqs"]
     },
 
     {
