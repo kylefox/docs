@@ -18,7 +18,7 @@ You can track payments from all other platforms (PayPal, Chargebee, etc) by send
   <li><strong>Method:</strong> <code>POST</code></li>
 </ul>
 
-### Headers
+### Request Headers
 
 Requests made to this endpoint must have the following request headers.
 
@@ -73,9 +73,9 @@ Here's an example request body using only the required parameters:
 }
 ```
 
-### Recommended Parameters
+### Optional Parameters
 
-It's recommended to include the following parameters in the JSON request body.
+The following parameters may optionally be in the JSON request body.
 
 <ParamField body="properties.id" type="string">
   The ID of the payment in your own database or external payment processor.
@@ -85,7 +85,7 @@ It's recommended to include the following parameters in the JSON request body.
   A short description of the payment.
 </ParamField>
 
-Here's an example request body using the recommended parameters:
+Here's an example request body using the optional parameters:
 
 ```json
 {
@@ -100,3 +100,52 @@ Here's an example request body using the recommended parameters:
   }
 }
 ```
+
+### Example Request
+
+Here's an example of a complete request using cURL:
+
+```shell
+curl -X POST 'https://t.revgems.com/messages' \
+  --header 'Content-Type: application/json' \
+  --data-raw $'{
+  "message_id": "payment-ABCD-DEFG",
+  "accountId": "42",
+  "type": "payment",
+  "properties": {
+    "amount_cents": 12300,
+    "currency": "USD",
+    "id": "payment-ABCD-DEFG",
+    "description": "Premium Subscription Renewal"
+  }
+}' \
+  --header 'Authorization: Bearer push_secret_test_ABCD1234'
+```
+
+### Example Responses
+
+  ```json 201 Created
+  {
+    "success": true,
+    "authentication": "secret",
+    "test_mode": true
+  }
+  ```
+  ```json 401 Unauthorized
+  {
+    "success": false,
+    "errors": [
+      "Invalid push key."
+    ]
+  }
+  ```
+  ```json 422 Unprocessable Content
+  {
+    "success": false,
+    "errors": [
+      "Properties `amount_cents` is not an integer",
+      "Properties `currency` is not a valid currency"
+    ]
+  }
+  ```
+
