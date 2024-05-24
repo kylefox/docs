@@ -1,0 +1,33 @@
+---
+title: 'Authentication'
+description: 'How to authenticate requests to the RevGems Tracking API'
+icon: 'lock'
+iconType: "solid"
+---
+
+## Push Key Secrets
+
+RevGems uses Push Key Secrets to authenticate requests. You can find these on the [Push Keys](https://app.revgems.com/tracking/push_keys) page in your RevGems dashboard. Be sure to use the <strong>test mode</strong> push key secret in your development environment and the <strong>live mode</strong> push key secret in your production environment.
+
+<Warning>
+  Keep your Push Key Secrets safe. Never expose them publicly through a web browser or commit them unencrypted to version control systems like git.
+</Warning>
+
+## Authenticating Requests
+
+Provide your Push Key Secret as a Bearer token in the `Authorization` header:
+
+```
+Authorization: Bearer push_key_secret_ABCDEFG123456
+```
+
+A `401 Unauthorized` error response will be returned if authentication fails.
+
+<ResponseExample>
+```json 401 Unauthorized
+{
+  "success": false,
+  "errors": ["Invalid push key."]
+}
+```
+</ResponseExample>

@@ -1,0 +1,37 @@
+---
+title: 'Track Payments'
+description: 'How to send payment messages to RevGems'
+icon: 'credit-card'
+iconType: "solid"
+---
+
+## Stripe Payments
+
+If you're using Stripe, you can simply install the RevGems App into your Stripe Account as described in the [Setup Guide](https://app.revgems.com/tracking/setup/payments). Once you've done so, charges processed by Stripe will appear in your [Message Log](https://app.revgems.com/tracking/messages?q%5Bmessage_id_or_anonymous_id_or_user_id_or_account_id_or_ip_or_properties_or_context_or_authentication_or_account_hash_cont%5D=&q%5Bmessage_type_eq%5D=payment&q%5Btest_mode_eq%5D=&button=) with type <code>payment</code>.
+
+## Other Payment Processors
+
+You can track payments from all other platforms (PayPal, Chargebee, etc) by sending a <code>payment</code> message to the Tracking API. To do this you'll need your [Push Key Secret](https://app.revgems.com/tracking/push_keys) from your RevGems dashboard.
+
+https://t.revgems.com/messages
+
+<ParamField header="Authorization" required>
+  Your Push Key Secret provided as a Bearer token.
+  See [Authentication](/tracking-api/server/authentication) for details.
+</ParamField>
+
+<ParamField header="Content-Type" required>
+  Must be `application/json`
+</ParamField>
+
+
+```json
+{
+  "accountId": "99",
+  "type": "payment",
+  "properties": {
+    "amount_cents": 12300,
+    "currency": "USD"
+  }
+}
+```

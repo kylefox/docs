@@ -27,8 +27,8 @@
   },
   "tabs": [
     {
-      "name": "REST API (Deprecated)",
-      "url": "api-reference"
+      "name": "Tracking API",
+      "url": "tracking-api"
     }
   ],
   "navigation": [
@@ -55,6 +55,20 @@
     {
       "group": "Payments",
       "pages": ["api-reference/payments/create"]
+    },
+
+    {
+      "group": "Getting Started",
+      "pages": [
+        "tracking-api/introduction"
+      ]
+    },
+    {
+      "group": "Server-Side Tracking",
+      "pages": [
+        "tracking-api/server/authentication",
+        "tracking-api/server/payments"
+      ]
     }
   ],
   "api": {
