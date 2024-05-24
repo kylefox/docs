@@ -35,6 +35,13 @@ Requests made to this endpoint must have the following request headers.
 
 Requests made to this endpoint must have the following parameters in the JSON request body.
 
+<ParamField body="message_id" type="string" required>
+  An arbitrary string identifier that functions as an [idempotency key](https://en.wikipedia.org/wiki/Idempotence).
+  Used to prevent the same message from being inadvertantly processed multiple times. We recommend using the payments unique ID in your own database or external payment process for this value.
+
+  <strong>Example:</strong> Imagine a scenario where your payments are sent to RevGems on a background job. If the API request succeeds but the job fails for another reason, the job may be automatically retried in your system — possibly many times. As long as the same <code>message_id</code> is sent, RevGems will only track the payment once, regardless of how many times the request is sent.
+</ParamField>
+
 <ParamField body="account_id" type="string" required>
   The Account ID in your system that the payment is associated with. This must be the same ID you pass when [tracking accounts](https://app.revgems.com/tracking/setup/accounts).
 </ParamField>
@@ -56,6 +63,7 @@ Here's an example request body using only the required parameters:
 
 ```json
 {
+  "message_id": "payment-ABCD-DEFG",
   "accountId": "42",
   "type": "payment",
   "properties": {
@@ -69,13 +77,6 @@ Here's an example request body using only the required parameters:
 
 It's recommended to include the following parameters in the JSON request body.
 
-<ParamField body="message_id" type="string">
-  An arbitrary string identifier that functions as an [idempotency key](https://en.wikipedia.org/wiki/Idempotence).
-  Used to prevent the same message from being inadvertantly processed multiple times. We recommend using the payments unique ID in your own database or external payment process for this value.
-
-  <strong>Example:</strong> Imagine a scenario where your payments are sent to RevGems on a background job. If the API request succeeds but the job fails for another reason, the job may be automatically retried in your system — possibly many times. As long as the same <code>message_id</code> is sent, RevGems will only track the payment once, regardless of how many times the request is sent.
-</ParamField>
-
 <ParamField body="properties.id" type="string">
   The ID of the payment in your own database or external payment processor.
 </ParamField>
@@ -88,9 +89,9 @@ Here's an example request body using the recommended parameters:
 
 ```json
 {
+  "message_id": "payment-ABCD-DEFG",
   "accountId": "42",
   "type": "payment",
-  "message_id": "payment-ABCD-DEFG",
   "properties": {
     "amount_cents": 12300,
     "currency": "USD",
