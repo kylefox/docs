@@ -5,5 +5,40 @@ icon: 'network-wired'
 iconType: "solid"
 ---
 
-The REST API allows you more fine-grained control over how visitor and payment data is written to and read from RevGems.
-JSON is the only supported data format.
+The Tracking API is how data about browsing behavior, conversion events, account information, and payments is sent to your RevGems workspace. The Tracking API receives "messages" that correspond to these events and attributes.
+
+## The Message Log
+
+The [Message Log](https://app.revgems.com/tracking/messages) in your RevGems dashboard gives you full insight into the data that's being pushed to your workspace. This is especially useful while building and troubleshooting your RevGems integration.
+
+## Write-Only API
+
+The Tracking API is a write-only API. This means data can be sent (or "pushed") to your RevGems account, but cannot be read from it. As such, it doesn't follow the same conventions you might find in a REST API.
+
+## Message Types
+
+The Tracking API currently supports the message types below.
+
+|  |                            |
+| -------- | ------------------------------------- |
+| `page` | Represents a page view on your marketing website, web app, help site, etc. |
+| `lead` | Indicates that the current visitor has just converted to a lead. |
+| `account`   | Identifies an account (i.e. customer) in your system. |
+| `user`   | (Optional) Identifies an individual belonging to an account in your system. |
+| `payment`   | Represents a payment made by one of your accounts. |
+
+## Client-Side Tracking (JavaScript)
+
+Messages (aside from payments) can be tracked using the RevGems JavaScript library. The [Setup Guide](https://app.revgems.com/tracking/setup) walks you through each step:
+
+<ol>
+  <li><a href="https://app.revgems.com/tracking/setup/visitors">Track Visitors</a> (page views)</li>
+  <li><a href="https://app.revgems.com/tracking/setup/accounts">Track Accounts</a></li>
+  <li><a href="https://app.revgems.com/tracking/setup/leads">Track Leads</a></li>
+</ol>
+
+The Setup Guide also shows how to [Track Payments](https://app.revgems.com/tracking/setup/payments) if you're using Stripe. You can use [Server-Side Payment Tracking](/tracking-api/server/payments) to integrate with all other payment processors.
+
+## Server-Side Tracking
+
+The complete Server-Side Tracking API is still in development. However, you can still use [Server-Side Payment Tracking](/tracking-api/server/payments).
