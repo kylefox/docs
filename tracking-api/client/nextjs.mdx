@@ -1,0 +1,45 @@
+---
+title: 'Next.js'
+description: 'Tips for integrating RevGems with Next.js'
+icon: 'react'
+iconType: "solid"
+---
+
+RevGems will automatically track page views when the browser loads a new document.
+
+However, with [Next.js](https://nextjs.org) only the first page view is tracked because subsequent navigation doesn't trigger a true page refresh.
+
+Because of this you must track subsequent page views manually with `revgems("trackPageView")` when the router fires the `routeChangeComplete` event:
+
+```javascript
+import { useEffect } from 'react'
+import { useRouter } from 'next/router'
+
+export default function MyApp({ Component, pageProps }) {
+  const router = useRouter();
+
+  useEffect(() => {
+    let originUrl;
+
+    // Keep track of where we're navigating from (for the referrer)
+    const handleRouteChangeStart = (url) => {
+      originUrl = document.location.href;
+    };
+
+    const handleRouteChangeComplete = (url) => {
+      window.revgems('trackPageView', { referrer: originUrl }); // 👈 TRACK PAGE VIEW IN REVGEMS
+    };
+
+    router.events.on('routeChangeStart', handleRouteChangeStart);
+    router.events.on('routeChangeComplete', handleRouteChangeComplete);
+
+    // If the component is unmounted, unsubscribe from the event with the `off` method:
+    return () => {
+      router.events.off('routeChangeStart', handleRouteChangeStart);
+      router.events.off('routeChangeComplete', handleRouteChangeComplete);
+    };
+  }, [router.events]);
+
+  return
+}
+```

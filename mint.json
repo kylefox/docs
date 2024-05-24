@@ -40,7 +40,8 @@
     {
       "group": "Getting Started",
       "pages": [
-        "tracking-api/introduction"
+        "tracking-api/introduction",
+        "tracking-api/client/nextjs"
       ]
     },
     {
