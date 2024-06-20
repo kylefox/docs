@@ -1,0 +1,35 @@
+---
+title: Tracking links & UTMs
+description: Learn more about tracking links and UTMs in RevGems
+icon: 'link'
+---
+
+RevGems automatically tracks all traffic that comes to your marketing site and app through UTMs and some custom parameters.
+
+Link tracking is useful in scenarios where you can control the link and can add tracking parameters. They are often used for things such as:
+
+- Tracking paid marketing campaigns
+- Grouping traffic from different sources, mediums, etc. into a marketing campaign you can analyze as a whole
+- Segmenting your traffic deeper than typical browser referrer data provides
+- A/B testing ads, off-site content, etc.
+- Seeing which specific post on social media drove visitors, leads, customers & revenue rather than seeing the source grouped as a whole
+- Seeing which CTA enticed people to click through to your site or app
+- Categorizing traffic that would normally show up as Direct
+
+**RevGems automatically ingests the following UTMs:**
+
+- utm_source
+- utm_medium
+- utm_campaign
+- utm_content
+- utm_term
+
+The UTM data is being tracked by RevGems and more detailed reports will be coming in the future.
+
+**Outside of UTMs, RevGems also currently supports the following custom parameters:**
+
+- `?revgems=`
+- `?via=`
+- `?ref=`
+
+For example, if you have a link (`company.com`) and you want to add a custom tracking parameter to the URL, you'd simply add `?revgems=token` to the end of the URL and RevGems would automatically ingest the tracking link. The final URL might look something like `company.com?revgems=twitter-thread`
